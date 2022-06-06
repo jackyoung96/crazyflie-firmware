@@ -24,6 +24,11 @@ config CONTROLLER_MELLINGER
     help
         Use the Mellinger controller as default
 
+config CONTROLLER_NN
+    bool "NN controller"
+    help
+        Use the NN (Neural network) controller as default
+
 endchoice
 
 config ESTIMATOR_KALMAN_ENABLE

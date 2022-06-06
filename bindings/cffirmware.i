@@ -19,6 +19,8 @@
 #include "num.h"
 #include "controller_mellinger.h"
 #include "power_distribution.h"
+#include "controller_nn.h"
+#include "network_evaluate.h"
 %}
 
 %include "math3d.h"
@@ -30,6 +32,8 @@
 %include "imu_types.h"
 %include "controller_mellinger.h"
 %include "power_distribution.h"
+%include "controller_nn.h"
+%include "network_evaluate.h"
 
 %inline %{
 struct poly4d* piecewise_get(struct piecewise_traj *pp, int i)

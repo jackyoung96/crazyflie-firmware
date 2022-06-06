@@ -6,6 +6,7 @@
 #include "controller_pid.h"
 #include "controller_mellinger.h"
 #include "controller_indi.h"
+#include "controller_nn.h"
 
 #include "autoconf.h"
 
@@ -18,6 +19,7 @@ typedef struct {
   void (*init)(void);
   bool (*test)(void);
   void (*update)(control_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick);
+  void (*updateDirect)(motors_thrust_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick);
   const char* name;
 } ControllerFcns;
 
@@ -26,6 +28,7 @@ static ControllerFcns controllerFunctions[] = {
   {.init = controllerPidInit, .test = controllerPidTest, .update = controllerPid, .name = "PID"},
   {.init = controllerMellingerInit, .test = controllerMellingerTest, .update = controllerMellinger, .name = "Mellinger"},
   {.init = controllerINDIInit, .test = controllerINDITest, .update = controllerINDI, .name = "INDI"},
+  {.init = controllerNNInit, .test = controllerNNTest, .updateDirect = controllerNN, .name = "NN"},
 };
 
 
@@ -46,6 +49,8 @@ void controllerInit(ControllerType controller) {
     #define CONTROLLER ControllerTypeINDI
   #elif defined(CONFIG_CONTROLLER_MELLINGER)
     #define CONTROLLER ControllerTypeMellinger
+  #elif defined(CONFIG_CONTROLLER_NN)
+    #define CONTROLLER ControllerTypeNN
   #else
     #define CONTROLLER ControllerTypeAny
   #endif
@@ -75,6 +80,10 @@ bool controllerTest(void) {
 
 void controller(control_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick) {
   controllerFunctions[currentController].update(control, setpoint, sensors, state, tick);
+}
+
+void controllerDirect(motors_thrust_t *control, setpoint_t *setpoint, const sensorData_t *sensors, const state_t *state, const uint32_t tick) {
+  controllerFunctions[currentController].updateDirect(control, setpoint, sensors, state, tick);
 }
 
 const char* controllerGetName() {

@@ -33,12 +33,17 @@ typedef enum {
   ControllerTypePID,
   ControllerTypeMellinger,
   ControllerTypeINDI,
+  ControllerTypeNN,
   ControllerType_COUNT,
 } ControllerType;
 
 void controllerInit(ControllerType controller);
 bool controllerTest(void);
 void controller(control_t *control, setpoint_t *setpoint,
+                                         const sensorData_t *sensors,
+                                         const state_t *state,
+                                         const uint32_t tick);
+void controllerDirect(motors_thrust_t *control, setpoint_t *setpoint,
                                          const sensorData_t *sensors,
                                          const state_t *state,
                                          const uint32_t tick);

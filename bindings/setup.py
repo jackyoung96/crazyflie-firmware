@@ -27,6 +27,8 @@ fw_sources = [
     "src/utils/src/num.c",
     "src/modules/src/controller_mellinger.c",
     "src/modules/src/power_distribution_stock.c",
+    "src/modules/src/controller_nn.c",
+    "src/modules/src/network_evaluate.c",
 ]
 
 cffirmware = Extension(
