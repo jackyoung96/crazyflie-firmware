@@ -75,7 +75,7 @@ static setpoint_t tempSetpoint;
 static StateEstimatorType estimatorType;
 static ControllerType controllerType;
 
-static STATS_CNT_RATE_DEFINE(stabilizerRate, 500);
+static STATS_CNT_RATE_DEFINE(stabilizerRate, 200);
 static rateSupervisor_t rateSupervisorContext;
 static bool rateWarningDisplayed = false;
 
@@ -271,7 +271,7 @@ static void stabilizerTask(void* param)
       compressSetpoint();
 
       collisionAvoidanceUpdateSetpoint(&setpoint, &sensorData, &state, tick);
-      if (controllerType != 4) {
+      if (controllerType == ControllerTypeNN) {
         // Sim2Real: Direct motor control
         controllerDirect(&motorPower, &setpoint, &sensorData, &state, tick);
         checkEmergencyStopTimeout();

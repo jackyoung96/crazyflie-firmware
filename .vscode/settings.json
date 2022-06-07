@@ -6,5 +6,6 @@
     },
     "files.associations": {
         "bootloader.h": "c"
-    }
+    },
+    "cortex-debug.gdbPath": "gdb-multiarch"
 }
